@@ -1,0 +1,9 @@
+- name: Deploy forum
+  hosts: dev
+  become: yes
+  become_user: root
+  roles:
+  - common
+  - php
+  - mysql
+  - omskvelo-mysql
