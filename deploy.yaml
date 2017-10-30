@@ -4,6 +4,7 @@
   become_user: root
   roles:
   - common
+  - nginx
   - php
   - mysql
   - omskvelo-mysql
