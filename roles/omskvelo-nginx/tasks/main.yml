@@ -1,0 +1,12 @@
+- name: Copy nginx configuration
+  template:
+    src: templates/omskvelo.ru.conf 
+    dest: "/etc/nginx/sites-available/omskvelo.ru.conf"
+  notify: reload nginx
+
+- name: Link nginx configuration
+  file:
+    src: "/etc/nginx/sites-available/omskvelo.ru.conf"
+    dest: "/etc/nginx/sites-enabled/omskvelo.ru.conf"
+    state: link
+  notify: reload nginx
