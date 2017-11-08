@@ -1,0 +1,12 @@
+- name: Create omskvelo unix group
+  group: 
+    name: omskvelo
+    state: present
+
+- name: Create omskvelo unix user
+  user:
+    name: omskvelo
+    group: omskvelo
+    shell: /usr/sbin/nologin
+    createhome: no
+    state: present
