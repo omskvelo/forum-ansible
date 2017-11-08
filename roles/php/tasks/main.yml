@@ -1,9 +1,13 @@
 - name: touch PHP-FPM default config file
-  command: touch /etc/php/7.1/fpm/pool.d/www.conf
+  file: 
+    path: /etc/php/7.1/fpm/pool.d/www.conf
+    state: touch
 
 - name: Install PHP7
   include_role:
     name: itcraftsmanpl.php7
 
 - name: remove PHP-FPM default config file
-  command: rm /etc/php/7.1/fpm/pool.d/www.conf
+  file: 
+    path: /etc/php/7.1/fpm/pool.d/www.conf
+    state: absent

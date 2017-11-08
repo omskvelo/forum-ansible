@@ -1,2 +1,3 @@
 php_packages:
   - php7.1-xml
+  - php7.1-zip
