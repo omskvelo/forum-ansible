@@ -3,9 +3,9 @@
   become: yes
   become_user: root
   roles:
-  # - common
-  # - nginx
-  # - php
-  # - mysql
-  # - omskvelo-mysql
-  - omskvelo-nginx
+  - { role: common,          tags: common }
+  - { role: nginx,           tags: nginx }
+  - { role: php,             tags: php }
+  - { role: mysql,           tags: mysql }
+  - { role: omskvelo-mysql,  tags: omskvelo-mysql }
+  - { role: omskvelo-nginx,  tags: omskvelo-nginx }

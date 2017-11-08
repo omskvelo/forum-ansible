@@ -2,6 +2,12 @@
   include_role:
     name: nickjj.nginx
 
+- name: Open http port
+  ufw:
+      rule: allow
+      port: 80
+
+
 - name: Open https port
   ufw:
       rule: allow
