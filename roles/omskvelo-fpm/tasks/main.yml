@@ -1,0 +1,16 @@
+- stat:
+    path: /etc/php/7.1/fpm/pool.d/www.conf
+  register: php_www_pool
+
+- command: mv /etc/php/7.1/fpm/pool.d/www.conf /etc/php/7.1/fpm/pool.d/www.conf-disabled
+  notify: restart php7.1-fpm
+  when: php_www_pool.stat.exists
+
+- name: Copy PHP-FPM configuration
+  template:
+    src: templates/omskvelo.conf 
+    dest: /etc/php/7.1/fpm/pool.d/omskvelo.conf
+    mode: 444
+    owner: root
+    backup: yes
+  notify: restart php-fpm

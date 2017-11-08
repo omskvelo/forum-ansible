@@ -8,4 +8,5 @@
   - { role: php,             tags: php }
   - { role: mysql,           tags: mysql }
   - { role: omskvelo-mysql,  tags: omskvelo-mysql }
+  - { role: omskvelo-fpm,    tags: omskvelo-fpm }
   - { role: omskvelo-nginx,  tags: omskvelo-nginx }
