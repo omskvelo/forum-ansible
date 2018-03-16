@@ -1,0 +1,3 @@
+- name: Install PHP-memcached
+  include_role:
+    name: geerlingguy.php-memcached
