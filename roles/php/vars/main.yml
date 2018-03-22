@@ -1,3 +1,5 @@
 php_packages:
-  - php7.1-xml
-  - php7.1-zip
+  - php{{ php_version }}-fpm
+  - php{{ php_version }}-xml
+  - php{{ php_version }}-zip
+  - php{{ php_version }}-memcached

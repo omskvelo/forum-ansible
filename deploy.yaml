@@ -8,7 +8,6 @@
   - { role: php,             tags: php }
   - { role: mysql,           tags: mysql }
   - { role: memcached,       tags: memcached }
-  - { role: php-memcached,   tags: php-memcached }
   - { role: omskvelo-common, tags: omskvelo-common }
   - { role: omskvelo-mysql,  tags: omskvelo-mysql }
   - { role: omskvelo-fpm,    tags: omskvelo-fpm }

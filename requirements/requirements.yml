@@ -1,5 +1,5 @@
-- src: itcraftsmanpl.php7 
+- src: geerlingguy.php-versions
+- src: geerlingguy.php
 - src: nickjj.nginx
 - src: geerlingguy.mysql
 - src: geerlingguy.memcached
-- src: geerlingguy.php-memcached

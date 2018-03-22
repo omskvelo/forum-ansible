@@ -1,13 +1,3 @@
-- name: touch PHP-FPM default config file
-  file: 
-    path: /etc/php/7.1/fpm/pool.d/www.conf
-    state: touch
-
 - name: Install PHP7
   include_role:
-    name: itcraftsmanpl.php7
-
-- name: remove PHP-FPM default config file
-  file: 
-    path: /etc/php/7.1/fpm/pool.d/www.conf
-    state: absent
+    name: geerlingguy.php-versions
