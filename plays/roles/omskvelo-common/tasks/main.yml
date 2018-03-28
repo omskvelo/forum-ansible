@@ -1,12 +1,12 @@
 - name: Create omskvelo unix group
   group: 
-    name: omskvelo
+    name: "{{ omskvelo_unix_group }}"
     state: present
 
 - name: Create omskvelo unix user
   user:
-    name: omskvelo
-    group: omskvelo
+    name: "{{ omskvelo_unix_user }}"
+    group: "{{ omskvelo_unix_group }}"
     shell: /usr/sbin/nologin
     createhome: no
     state: present

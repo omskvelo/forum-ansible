@@ -1,9 +1,8 @@
-- name: Deploy forum
-  hosts: dev
+- name: Deploy forum environment
+  hosts: "{{ host }}"
   become: yes
   become_user: root
   roles:
-  - { role: common,          tags: common }
   - { role: nginx,           tags: nginx }
   - { role: php,             tags: php }
   - { role: mysql,           tags: mysql }

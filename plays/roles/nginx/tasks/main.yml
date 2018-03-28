@@ -7,7 +7,6 @@
       rule: allow
       port: 80
 
-
 - name: Open https port
   ufw:
       rule: allow

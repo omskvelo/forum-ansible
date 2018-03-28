@@ -1,0 +1,5 @@
+- name: Import database
+  mysql_db:
+    name: {{ omskvelo_sql_db }}
+    state: import
+    target: {{ db_filename }}

@@ -1,0 +1,32 @@
+- name: Deploy Invision Community Suite sources
+  hosts: "{{ host }}"
+  tasks:
+
+  - name: git clone locally
+    local_action:
+      module: git
+      repo: "git@bitbucket.org:ivanzoid/omskvelo-forum.git"
+      dest: "omskvelo-forum"
+      depth: 1
+
+  - name: create dir
+    file:
+      path: "{{ ipb_location }}"
+      state: directory
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+    become: yes
+
+  - name: copy sources
+    synchronize:
+      src: omskvelo-forum/
+      dest: "{{ ipb_location }}"
+
+  - name: update dir permissions
+    file:
+      path: "{{ forum_location }}"
+      state: directory
+      recurse: yes
+      owner: "{{ omskvelo_unix_user }}"
+      group: "{{ omskvelo_unix_user }}"
+    become: yes

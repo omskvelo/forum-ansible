@@ -1,0 +1,16 @@
+#!/bin/bash -ex
+
+main()
+{
+    pushd $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd) >/dev/null
+
+    cd ..
+
+    ./requirements/install.sh
+
+    ansible-playbook  -i hosts/prod.ini  -e "@secret_vars/prod.yml"  -e "host=prod"  --ask-become-pass   $@
+
+	popd >/dev/null
+}
+
+main "$@"
