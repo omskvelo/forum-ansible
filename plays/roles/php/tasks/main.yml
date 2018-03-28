@@ -1,3 +1,0 @@
-- name: Install PHP7
-  include_role:
-    name: geerlingguy.php-versions

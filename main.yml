@@ -3,11 +3,11 @@
   become: yes
   become_user: root
   roles:
+  - { role: omskvelo-common, tags: omskvelo-common }
   - { role: nginx,           tags: nginx }
   - { role: php,             tags: php }
   - { role: mysql,           tags: mysql }
   - { role: memcached,       tags: memcached }
-  - { role: omskvelo-common, tags: omskvelo-common }
   - { role: omskvelo-mysql,  tags: omskvelo-mysql }
   - { role: omskvelo-fpm,    tags: omskvelo-fpm }
   - { role: omskvelo-nginx,  tags: omskvelo-nginx }

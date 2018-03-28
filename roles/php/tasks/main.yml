@@ -1,0 +1,7 @@
+- name: Install PHP-versions
+  include_role:
+    name: geerlingguy.php-versions
+
+- name: Install PHP
+  include_role:
+    name: geerlingguy.php
