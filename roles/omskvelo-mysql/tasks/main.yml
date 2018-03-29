@@ -1,0 +1,12 @@
+# - name: Create database
+#   mysql_db:
+#     name: "{{ omskvelo_sql_db }}"
+#     encoding: utf8
+#     state: present
+
+- name: Create MySQL user
+  mysql_user:
+    name: "{{ omskvelo_sql_user }}"
+    password: "{{ omskvelo_sql_password }}"
+    priv: "{{ omskvelo_sql_db }}.*:ALL"
+    state: present

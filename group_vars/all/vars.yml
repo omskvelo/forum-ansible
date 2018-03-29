@@ -2,6 +2,7 @@ php_version: '7.2'
 
 omskvelo_unix_user: omskvelo
 omskvelo_unix_group: omskvelo
+omskvelo_sql_user: omskvelo
 omskvelo_sql_db: omskvelo
 server_name: omskvelo.ru
 forum_location: /srv/omskvelo.ru

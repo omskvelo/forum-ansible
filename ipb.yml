@@ -9,6 +9,12 @@
       dest: "omskvelo-forum"
       depth: 1
 
+  - name: remove .git locally
+    local_action:
+      module: file
+      path: "omskvelo-forum/.git"
+      state: absent
+
   - name: create dir
     file:
       path: "{{ ipb_location }}"
@@ -28,5 +34,19 @@
       state: directory
       recurse: yes
       owner: "{{ omskvelo_unix_user }}"
-      group: "{{ omskvelo_unix_user }}"
+      group: "{{ omskvelo_unix_group }}"
+    become: yes
+
+  - name: update datastore dir permissions
+    file:
+      path: '{{ item }}'
+      state: directory
+      owner: "{{ omskvelo_unix_user }}"
+      group: "{{ omskvelo_unix_group }}"
+      mode: 0770
+    with_items:
+      - "{{ ipb_location }}/datastore"
+      - "{{ ipb_location }}/plugins"
+      - "{{ ipb_location }}/uploads"
+      - "{{ ipb_location }}/uploads/logs"
     become: yes
