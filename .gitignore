@@ -2,3 +2,6 @@
 sudo_pass
 secret_vars/prod.yml
 omskvelo-forum
+*.tgz
+*.bz2
+*.gz
