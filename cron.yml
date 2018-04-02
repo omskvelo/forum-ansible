@@ -1,0 +1,10 @@
+- name: Setup cron
+  hosts: "{{ host }}"
+  tasks:
+
+  - name: Setup cron
+    cron:
+      name: "IPB cron"
+      user: "{{ omskvelo_unix_user }}"
+      job: "/usr/bin/php -d memory_limit=-1 -d max_execution_time=0 {{ ipb_location }}/applications/core/interface/task/task.php {{ key }}"
+    become: yes
