@@ -10,3 +10,13 @@
     shell: /usr/sbin/nologin
     createhome: no
     state: present
+
+- name: Ensure a locale exists
+  locale_gen:
+    name: ru_RU.UTF-8
+    state: present
+
+- name: Ensure a locale exists
+  locale_gen:
+    name: ru_RU
+    state: present
