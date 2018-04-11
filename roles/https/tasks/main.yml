@@ -1,9 +1,3 @@
-# - set_fact: acme_dir="/home/{{ acme_user }}/acme.sh"
-# - set_fact: acme_dot_folder="/home/{{ acme_user }}/.acme.sh"
-# - set_fact: nginx_ssl_dir="/etc/nginx/ssl/omskvelo"
-# - set_fact: nginx_key_file="{{ nginx_ssl_dir }}/key.pem"
-# - set_fact: nginx_cert_file="{{ nginx_ssl_dir }}/cert.pem"
-
 - name: Create acme unix user
   user:
     name: "{{ acme_user }}"
@@ -91,4 +85,4 @@
     chdir: "{{ acme_dot_folder }}"
   become: yes
   become_user: "{{ acme_user }}"
-  # when: not nginx_certificate_file_stat.stat.exists
+  when: not nginx_certificate_file_stat.stat.exists
