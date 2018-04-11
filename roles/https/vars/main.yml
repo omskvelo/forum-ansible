@@ -1,0 +1,2 @@
+acme_dir: "/home/{{ acme_user }}/acme.sh"
+acme_dot_folder: "/home/{{ acme_user }}/.acme.sh"

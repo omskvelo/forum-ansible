@@ -8,7 +8,7 @@ main()
 
     ./requirements/install.sh
 
-    ansible-playbook  -i hosts/dev.ini  -e "@secret_vars/dev.yml"  -e "host=dev"  --ask-become-pass  $@
+    ansible-playbook  -i hosts/dev.ini  -e "@vars/vars.yml"  -e "@secret_vars/dev.yml"  -e "host=dev"  --ask-become-pass  $@
 
 	popd >/dev/null
 }

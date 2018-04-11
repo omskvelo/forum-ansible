@@ -1,0 +1,4 @@
+- name: Deploy forum environment
+  hosts: "{{ host }}"
+  roles:
+  - { role: https, tags: https }

@@ -1,0 +1,94 @@
+# - set_fact: acme_dir="/home/{{ acme_user }}/acme.sh"
+# - set_fact: acme_dot_folder="/home/{{ acme_user }}/.acme.sh"
+# - set_fact: nginx_ssl_dir="/etc/nginx/ssl/omskvelo"
+# - set_fact: nginx_key_file="{{ nginx_ssl_dir }}/key.pem"
+# - set_fact: nginx_cert_file="{{ nginx_ssl_dir }}/cert.pem"
+
+- name: Create acme unix user
+  user:
+    name: "{{ acme_user }}"
+    createhome: yes
+    shell: /usr/sbin/nologin
+    state: present
+  become: yes
+
+- name: Stat acme dir
+  stat:
+    path: "{{ acme_dir }}"
+  register: acme_dir_stat
+
+- name: Clone acme.sh git repo
+  git:
+    repo: https://github.com/Neilpang/acme.sh
+    dest: "{{ acme_dir }}"
+    depth: 1
+  become: yes
+  become_user: "{{ acme_user }}"
+  when: not acme_dir_stat.stat.exists
+
+- name: Stat acme dot folder
+  stat:
+    path: "{{ acme_dot_folder }}"
+  register: acme_dot_folder_stat
+
+- name: Install acme.sh
+  shell: ./acme.sh --install
+  args:
+    chdir: "{{ acme_dir }}"
+    creates: "{{ acme_dot_folder }}"
+  become: yes
+  become_user: "{{ acme_user }}"
+  when: not acme_dot_folder_stat.stat.exists
+
+- name: Stat certificates dir
+  stat:
+    path: "{{ acme_dot_folder }}/omskvelo.ru"
+  become: yes
+  become_user: "{{ acme_user }}"
+  register: certificates_dir_stat
+
+- name: Issue certificate
+  shell: PDD_Token={{ yandex_pdd_token }} ./acme.sh --issue --dns dns_yandex -d omskvelo.ru -d '*.omskvelo.ru'
+  args:
+    chdir: "{{ acme_dot_folder }}"
+  become: yes
+  become_user: "{{ acme_user }}"
+  when: not certificates_dir_stat.stat.exists
+
+- name: Stat nginx certificates
+  stat:
+    path: "{{ nginx_key_file }}"
+  become: yes
+  become_user: "{{ acme_user }}"
+  register: nginx_certificate_file_stat
+
+- name: create nginx ssl dir
+  file:
+    path: "{{ nginx_ssl_dir }}"
+    state: directory
+    owner: "{{ acme_user }}"
+  become: yes
+  when: not nginx_certificate_file_stat.stat.exists
+
+- name: Create sudoers files
+  template:
+    src: sudoers
+    dest: "/etc/sudoers.d/{{ acme_user }}"
+    mode: 0440
+    owner: root
+    group: root
+    validate: "/usr/sbin/visudo -cf %s"
+  become: yes
+
+- name: Install certificates
+  shell: |
+    ./acme.sh --install-cert -d omskvelo.ru  \
+    --cert-file       "{{ nginx_cert_file }}" \
+    --key-file        "{{ nginx_key_file }}"  \
+    --fullchain-file  "{{ nginx_fullchain_file }}" \
+    --reloadcmd      "sudo service nginx force-reload"
+  args:
+    chdir: "{{ acme_dot_folder }}"
+  become: yes
+  become_user: "{{ acme_user }}"
+  # when: not nginx_certificate_file_stat.stat.exists
