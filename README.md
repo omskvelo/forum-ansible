@@ -1,19 +1,39 @@
-В этих файлах находятся адреса хостов:
-- `hosts/local_dev.ini` - какой-либо свой локальный сервер для тестов
-- `hosts/dev.ini` - dev.omskvelo.ru
-- `hosts/prod.ini` - omskvelo.ru
+В директории `hosts` находятся файлы с адресами хостов:
 
-Есть 3 скрипта для удобства запуска:
+- `local_dev.ini` - какой-либо свой локальный сервер для тестов
+- `dev.ini` - dev.omskvelo.ru
+- `prod.ini` - omskvelo.ru
+
+Основные настраиваемые переменные находятся в файле `vars/vars.yml` (скорее всего ничего менять не нужно будет).  
+
+«Секретные» переменные находятся в директории `secret_vars`:
+
+- `dev.yml` - для local_dev и dev хостов
+- `prod.yml` -  соответственно, для prod'а
+
+В директории `bin` находятся скрипты для удобства запуска, которые просто берут адреса хостов и секретные переменные из соответствующих файлов и запускают playbook:
+
 - `bin/play_dev` `playbook.yml` — Запустит `playbook.yml` на dev-хосте
 - `bin/play_local_dev` `playbook.yml` — на local_dev
 - `bin/prod_play` `playbook.yml` — на проде
 
-Описания playbook'ов (для примера, запускаются на local_dev машине):
-`bin/play_local_dev` `py2.yml` — Установить python2 на целевой машине (для ansibl'а)
-`bin/play_local_dev` `main.yml` — Установить/настроить основное окружение (nginx/mysql/php/etc)
-`bin/play_local_dev` `ipb.yml` — Зальёт исходники форума из гита в нужную директорию (нужен доступ к гиту)
-`bin/play_local_dev` `db_import.yml` `-e` `file=sql_dump_file_name.tar.gz` — Залить дамп базы из файла `sql_dump_file_name.tar.gz` на целевую машине (не стоит запускать на проде ес-но)
+Описания playbook'ов:
 
-Опциональные шаги (желательные для прода), которые можно/нужно сделать когда всё заработает:
-- Сходить в AdminCP -> System -> Settings/Advanced Configuration -> Server Environment -> выбрать "Use cron" -> скопировать ключ в конце строки и подставить как `key` в следующую команду:
-`bin/play_local_dev` `cron.yml` `-e` `key=e9c0f04eae366b86bf917c3485be0749`
+- `py2.yml` — Установить python2 на целевой машине (для ansibl'а)
+- `main.yml` — Установить/настроить основное окружение (nginx/mysql/php/etc)
+- `ipb.yml` — Зальёт исходники форума из гита в нужную директорию (нужен доступ к гиту)
+- `db_import.yml` `-e file=sql_dump_file_name.tar.gz` — Залить дамп базы из файла `sql_dump_file_name.tar.gz` на целевую машине (не стоит запускать на проде ес-но)
+- `https.iml` — Выпустить https-сертификат через let's encrypt (в `secret_vars` должна быть определена переменная `yandex_pdd_token`)
+- `cron.yml` `-e key=e9c0f04eae366b86bf917c3485be0749` - настроить cron для IPB, key берётся из  AdminCP → System → Settings/Advanced Configuration → Server Environment → выбрать "Use cron", скопировать ключ и подставить как параметр `key`), для прода стоит сделать.
+
+
+Пример как задеплоить на local_dev:
+
+- поднимаем хост
+- прописываем его адрес в `hosts/local_dev.ini`
+- `bin/play_local_dev py2.yml`
+- `bin/play_local_dev main.yml`
+- `bin/play_local_dev ipb.yml`
+- берём откуда-нибудь дамп базы, кладём его в файл `db_dump.tgz`
+- `bin/play_local_dev db_import.yml -e file=db_dump.tgz`
+- в каком-то виде всё должно заработать
