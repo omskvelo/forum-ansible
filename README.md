@@ -22,9 +22,9 @@
 - `py2.yml` — Установить python2 на целевой машине (для ansibl'а)
 - `main.yml` — Установить/настроить основное окружение (nginx/mysql/php/etc)
 - `ipb.yml` — Зальёт исходники форума из гита в нужную директорию (нужен доступ к гиту)
-- `db_import.yml` `-e file=sql_dump_file_name.tar.gz` — Залить дамп базы из файла `sql_dump_file_name.tar.gz` на целевую машине (не стоит запускать на проде ес-но)
+- `db_import.yml` `-e file=db_dump.tgz` — Залить дамп базы из файла `db_dump.tgz` на целевую машине (не стоит запускать на проде ес-но)
 - `https.iml` — Выпустить https-сертификат через let's encrypt (в `secret_vars` должна быть определена переменная `yandex_pdd_token`)
-- `cron.yml` `-e key=e9c0f04eae366b86bf917c3485be0749` - настроить cron для IPB, key берётся из  AdminCP → System → Settings/Advanced Configuration → Server Environment → выбрать "Use cron", скопировать ключ и подставить как параметр `key`), для прода стоит сделать.
+- `cron.yml` `-e key=<key>` - настроить cron для IPB, key берётся из  AdminCP → System → Settings/Advanced Configuration → Server Environment → выбрать "Use cron", скопировать ключ и подставить как параметр `key`), для прода стоит сделать.
 
 
 Пример как задеплоить на local_dev:
