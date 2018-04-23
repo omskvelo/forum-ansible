@@ -1,0 +1,42 @@
+- name: Export database
+  hosts: "{{ host }}"
+
+  vars:
+    - dump_file_name: "{{ inventory_hostname }}-{{ ansible_date_time.iso8601_basic }}.sql"
+
+  tasks:
+
+  - pause:
+      prompt: "WARNING: RUNNING ON PROD"
+    when: host == "prod"
+
+  # - name: set fact
+
+  - name: Dump database
+    mysql_db:
+      state: dump
+      name: "{{ omskvelo_sql_db }}"
+      target: "/tmp/{{ dump_file_name }}"
+      login_user: "{{ omskvelo_sql_user }}"
+      login_password: "{{ omskvelo_sql_password }}"
+  
+  - name: Compress dump
+    archive:
+      path: "/tmp/{{ dump_file_name }}"
+      dest: "/tmp/{{ dump_file_name }}.gz"
+
+  - name: Remove tmp file
+    file:
+      state: absent
+      path: "/tmp/{{ dump_file_name }}"      
+
+  - name: Download file
+    fetch:
+      src: "/tmp/{{ dump_file_name }}.gz"
+      dest: "{{ dump_file_name }}.gz"
+      flat: yes
+
+  - name: Remove tmp file
+    file:
+      state: absent
+      path: "/tmp/{{ dump_file_name }}.gz"

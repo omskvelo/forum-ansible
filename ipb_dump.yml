@@ -1,0 +1,23 @@
+- name: Export IPB
+  hosts: "{{ host }}"
+
+  vars:
+    - dump_file_name: "{{ inventory_hostname }}-{{ ansible_date_time.iso8601_basic }}-ipb"
+
+  tasks:
+  
+  - name: Compress dump
+    archive:
+      path: "{{ ipb_location }}"
+      dest: "/tmp/{{ dump_file_name }}.tgz"
+
+  - name: Download file
+    fetch:
+      src: "/tmp/{{ dump_file_name }}.tgz"
+      dest: "{{ dump_file_name }}.tgz"
+      flat: yes
+
+  - name: Remove tmp file
+    file:
+      state: absent
+      path: "/tmp/{{ dump_file_name }}.tgz"
