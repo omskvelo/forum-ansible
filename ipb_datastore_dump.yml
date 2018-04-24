@@ -1,15 +1,16 @@
-- name: Export IPB
+- name: Export IPB datastore folder
   hosts: "{{ host }}"
 
   vars:
-    - dump_file_name: "{{ inventory_hostname }}-ipb-{{ ansible_date_time.iso8601_basic_short }}"
+    - dump_file_name: "{{ inventory_hostname }}-datastore-{{ ansible_date_time.iso8601_basic_short }}"
 
   tasks:
   
   - name: Compress dump
     archive:
-      path: "{{ ipb_location }}"
+      path: "{{ ipb_datastore_location }}"
       dest: "/tmp/{{ dump_file_name }}.tgz"
+    become: yes
 
   - name: Download file
     fetch:
@@ -21,3 +22,5 @@
     file:
       state: absent
       path: "/tmp/{{ dump_file_name }}.tgz"
+    become: yes
+

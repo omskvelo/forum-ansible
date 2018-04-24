@@ -2,7 +2,7 @@
   hosts: "{{ host }}"
 
   vars:
-    - dump_file_name: "{{ inventory_hostname }}-{{ ansible_date_time.iso8601_basic }}.sql"
+    - dump_file_name: "{{ inventory_hostname }}-db_dump-{{ ansible_date_time.iso8601_basic_short }}.sql"
 
   tasks:
 

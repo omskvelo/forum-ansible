@@ -8,6 +8,8 @@ server_name: omskvelo.ru
 
 forum_location: /srv/omskvelo.ru
 ipb_location: "{{ forum_location }}/ipb"
+ipb_datastore_location: "{{ forum_location }}/datastore"
+ipb_uploads_location: "{{ forum_location }}/uploads"
 
 php_version: '7.2'
 
