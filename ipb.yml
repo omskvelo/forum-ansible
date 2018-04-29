@@ -1,5 +1,8 @@
 - name: Deploy Invision Community Suite sources
   hosts: "{{ host }}"
+  vars:
+    - dump_file_name: "{{ inventory_hostname }}-ipb-{{ ansible_date_time.iso8601_basic_short }}"
+
   tasks:
 
   - name: git clone locally
@@ -14,6 +17,12 @@
       module: file
       path: "omskvelo-forum/.git"
       state: absent
+
+  - name: make backup 
+    archive:
+      path: "{{ ipb_location }}"
+      dest: "/tmp/{{ dump_file_name }}.tgz"
+    become: yes
 
   - name: remove dir
     file:
