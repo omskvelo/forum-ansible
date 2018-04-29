@@ -1,7 +1,3 @@
-# - name: Intall php-fpm
-#   apt:
-#     name: php{{ php_version }}-fpm
-
 - stat:
     path: /etc/php/{{ php_version }}/fpm/pool.d/www.conf
   register: php_www_pool

@@ -8,4 +8,5 @@ php_packages_extra:
   - php{{php_version}}-memcached
   - php{{php_version}}-mysqli
   - php{{php_version}}-imagick
-  
+
+php_disable_functions: [exec, system, popen, proc_open, shell_exec]
