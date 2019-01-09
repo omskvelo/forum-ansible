@@ -74,6 +74,8 @@
 
   - name: Link IPB configuration
     file:
-      src: "../conf_global.php"
-      dest: "{{ ipb_location }}/conf_global.php"
+      src: "../{{ item }}"
+      dest: "{{ ipb_location }}/{{ item }}"
       state: link
+    with_items: "{{ ipb_config_files }}"
+    when: ipb_dir_stat.stat.exists

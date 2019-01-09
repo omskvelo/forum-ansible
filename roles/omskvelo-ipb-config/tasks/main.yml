@@ -1,10 +1,11 @@
 - name: Copy IPB configuration
   template:
-    src: templates/conf_global.php 
-    dest: "{{ forum_location }}/conf_global.php"
-    mode: 444
+    src: "templates/{{ item }}"
+    dest: "{{ forum_location }}/{{ item }}"
+    mode: '444'
     owner: "{{ omskvelo_unix_user }}"
-    backup: yes
+    group: "{{ omskvelo_unix_group }}"
+  with_items: "{{ ipb_config_files }}"
 
 - name: Stat IPB dir
   stat:
@@ -13,7 +14,8 @@
 
 - name: Link IPB configuration
   file:
-    src: "../conf_global.php"
-    dest: "{{ ipb_location }}/conf_global.php"
+    src: "../{{ item }}"
+    dest: "{{ ipb_location }}/{{ item }}"
     state: link
+  with_items: "{{ ipb_config_files }}"
   when: ipb_dir_stat.stat.exists
