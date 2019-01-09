@@ -58,7 +58,7 @@
       group: "{{ omskvelo_unix_group }}"
     become: yes
 
-  - name: update datastore dir permissions
+  - name: update other dir permissions
     file:
       path: '{{ item }}'
       state: directory
@@ -66,8 +66,8 @@
       group: "{{ omskvelo_unix_group }}"
       mode: 0770
     with_items:
-      - "{{ ipb_location }}/datastore"
+      - "{{ forum_location }}/datastore"
+      - "{{ forum_location }}/uploads"
+      - "{{ forum_location }}/uploads/logs"
       - "{{ ipb_location }}/plugins"
-      - "{{ ipb_location }}/uploads"
-      - "{{ ipb_location }}/uploads/logs"
     become: yes
