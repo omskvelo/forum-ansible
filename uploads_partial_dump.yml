@@ -1,0 +1,25 @@
+- name: Download uploads
+  hosts: "{{ host }}"
+
+  vars:
+    - dump_folder: "_{{ inventory_hostname }}-uploads_partial-{{ ansible_date_time.iso8601_basic_short }}"
+
+  tasks:
+
+  - name: Create folder
+    local_action:
+      module: file
+      path: "{{ dump_folder }}"
+      state: directory
+
+  - name: Partially download 'uploads' folder
+    synchronize:
+      mode: pull
+      src: "{{ ipb_uploads_location }}/{{ item }}"
+      dest: "{{ dump_folder }}/"
+    with_items:
+      - "emoji"
+      - "profile"
+      - "react"
+      - "template_cache"
+      - "themes"

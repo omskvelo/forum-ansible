@@ -1,4 +1,5 @@
 *.retry
+.vscode
 sudo_pass
 secret_vars/prod.yml
 omskvelo-forum
@@ -6,3 +7,4 @@ omskvelo-forum
 *.bz2
 *.gz
 *.tar
+_*

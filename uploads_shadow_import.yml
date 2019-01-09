@@ -1,0 +1,8 @@
+- name: Import shadow uploads
+  hosts: "{{ host }}"
+
+  tasks:
+
+  - pause:
+      prompt: "WARNING: RUNNING ON PROD"
+    when: host == "prod"

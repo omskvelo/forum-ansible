@@ -22,7 +22,10 @@
 - `py2.yml` — Установить python2 на целевой машине (для ansibl'а)
 - `main.yml` — Установить/настроить основное окружение (nginx/mysql/php/etc)
 - `ipb.yml` — Зальёт исходники форума из гита в нужную директорию (нужен доступ к гиту)
-- `db_import.yml` `-e file=db_dump.tgz` — Залить дамп базы из файла `db_dump.tgz` на целевую машине (не стоит запускать на проде ес-но)
+- `db_dump.yml` — Сделать дамп базы
+- `db_import.yml` `-e file=db_dump.tgz` — Залить дамп базы из файла `db_dump.tgz` на целевую машину (не стоит запускать на проде ес-но)
+- `uploads_partial_dump.yml` — Частично скачать содержимое uploads (чтобы форум поставленный из дампа базы на свежую машину выглядел более-менее адекватно)
+- `uploads_partial_import.ym.` `-e folder=uploads_folder` — Залить частично скачанную с помощью `uploads_partial_dump.yml` директорию uploads, из локальной директории `uploads_folder`
 - `https.iml` — Выпустить https-сертификат через let's encrypt (в `secret_vars` должна быть определена переменная `yandex_pdd_token`)
 - `cron.yml` `-e key=<key>` - настроить cron для IPB, key берётся из  AdminCP → System → Settings/Advanced Configuration → Server Environment → выбрать "Use cron", скопировать ключ и подставить как параметр `key`), для прода стоит сделать.
 
@@ -34,6 +37,6 @@
 - `bin/play_local_dev py2.yml`
 - `bin/play_local_dev main.yml`
 - `bin/play_local_dev ipb.yml`
-- берём откуда-нибудь дамп базы, кладём его в файл `db_dump.tgz`
-- `bin/play_local_dev db_import.yml -e file=db_dump.tgz`
+- берём откуда-нибудь дамп базы (делаем дамп с помощью `db_dump.yml`, или из бэкапов, или ещё откуда-нибудь), будем считать что он в файле `db_dump.sql.gz`
+- `bin/play_local_dev db_import.yml -e file=db_dump.sql.gz`
 - в каком-то виде всё должно заработать

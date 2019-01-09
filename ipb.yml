@@ -71,3 +71,9 @@
       - "{{ forum_location }}/uploads/logs"
       - "{{ ipb_location }}/plugins"
     become: yes
+
+  - name: Link IPB configuration
+    file:
+      src: "../conf_global.php"
+      dest: "{{ ipb_location }}/conf_global.php"
+      state: link

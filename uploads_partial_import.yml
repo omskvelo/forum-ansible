@@ -1,0 +1,38 @@
+- name: Import uploads
+  hosts: "{{ host }}"
+
+  vars:
+    - subfolders:
+      - "emoji"
+      - "profile"
+      - "react"
+      - "template_cache"
+      - "themes"
+
+  tasks:
+
+  - pause:
+      prompt: "WARNING: RUNNING ON PROD"
+    when: host == "prod"
+
+  - name: Remove directories
+    file:
+      state: absent
+      path: "{{ ipb_uploads_location }}/{{ item }}"
+    with_items: "{{ subfolders }}"
+    become: yes
+
+  - name: Upload 'uploads' folder pieces
+    synchronize:
+      src: "{{ folder }}/{{ item }}"
+      dest: "{{ ipb_uploads_location }}/"
+    with_items: "{{ subfolders }}"
+
+  - name: Update permissions
+    file:
+      path: "{{ ipb_uploads_location }}/{{ item }}"
+      owner: "{{ omskvelo_unix_user }}"
+      group: "{{ omskvelo_unix_group }}"
+      mode: 0770
+    with_items: "{{ subfolders }}"
+    become: yes

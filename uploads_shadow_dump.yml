@@ -1,0 +1,4 @@
+- name: Dump shadow uploads
+  hosts: "{{ host }}"
+
+  tasks:
