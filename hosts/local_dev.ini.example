@@ -1,0 +1,2 @@
+[local_dev]
+172.16.207.131 ansible_user=YOUR_USER omskvelo_board_url='http://127.0.0.1'

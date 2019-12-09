@@ -1,0 +1,2 @@
+[prod]
+omskvelo.ru ansible_user=YOUR_USER omskvelo_board_url='https://omskvelo.ru'

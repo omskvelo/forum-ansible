@@ -20,3 +20,11 @@
   locale_gen:
     name: ru_RU
     state: present
+
+- name: Create dir
+  file:
+    path: "{{ forum_location }}"
+    state: directory
+    owner: "{{ omskvelo_unix_user }}"
+    group: "{{ omskvelo_unix_group }}"
+  become: yes

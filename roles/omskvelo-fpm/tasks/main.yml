@@ -6,6 +6,13 @@
   notify: restart php-fpm
   when: php_www_pool.stat.exists
 
+- name: Create dir
+  file:
+    path: "/etc/php/{{ php_version }}/fpm/pool.d/"
+    state: directory
+    owner: "root"
+  become: yes
+
 - name: Copy PHP-FPM configuration
   template:
     src: templates/omskvelo.conf 

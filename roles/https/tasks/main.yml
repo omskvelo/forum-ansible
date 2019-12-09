@@ -4,6 +4,8 @@
     createhome: yes
     shell: /usr/sbin/nologin
     state: present
+    groups: "{{ omskvelo_unix_group }}"
+
   become: yes
 
 - name: Stat acme dir

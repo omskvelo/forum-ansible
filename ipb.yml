@@ -67,8 +67,8 @@
       mode: 0770
     with_items:
       - "{{ forum_location }}/datastore"
-      - "{{ forum_location }}/uploads"
-      - "{{ forum_location }}/uploads/logs"
+      # - "{{ forum_location }}/uploads"
+      # - "{{ forum_location }}/uploads/logs"
       - "{{ ipb_location }}/plugins"
     become: yes
 
@@ -78,4 +78,3 @@
       dest: "{{ ipb_location }}/{{ item }}"
       state: link
     with_items: "{{ ipb_config_files }}"
-    when: ipb_dir_stat.stat.exists
