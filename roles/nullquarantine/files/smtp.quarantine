@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+
+import sys
+import os
+import tempfile
+import syslog
+import re
+
+def conf():
+    fname = '/etc/nullmailer/quarantine'
+    with open(fname) as fd:
+        quarantine = set(fd.read().strip().split())
+
+    fname = '/etc/nullmailer/nullquarantine_rewrite_envelope_from'
+    with open(fname) as fd:
+        rewrite_envelope_from = fd.read().strip()
+
+    return quarantine, rewrite_envelope_from
+
+def main():
+    syslog.openlog('nullmailer', syslog.LOG_CONS | syslog.LOG_PID, syslog.LOG_MAIL)
+
+    quarantine, rewrite_envelope_from = conf()
+
+    envelope_from = sys.stdin.readline().strip()
+    envelope_to = sys.stdin.readline().strip()
+    message = sys.stdin.read()
+
+    sys.stdin.seek(0, os.SEEK_SET) # assuming that's file, not pipe
+
+    if envelope_to in quarantine:
+        qrntfname = '%d.%d' % (os.fstat(sys.stdin.fileno()).st_mtime, os.getpid())
+        fd, tmpname = tempfile.mkstemp(prefix='qrnt.', dir='/var/spool/nullmailer/tmp')
+        with os.fdopen(fd, 'w') as output:
+            output.write(sys.stdin.read())
+        os.link(tmpname, os.path.join('/var/spool/nullmailer/quarantine', qrntfname))
+        syslog.syslog(syslog.LOG_INFO, 'smtp.quarantine: Succeeded: moved mail to <%s> to %s' % (envelope_to, qrntfname))
+        os.unlink(tmpname)
+    else:
+        if envelope_from != rewrite_envelope_from:
+            fd, tmpname = tempfile.mkstemp(prefix='rwrt.', dir='/var/spool/nullmailer/tmp')
+            os.unlink(tmpname)
+            syslog.syslog(syslog.LOG_INFO, 'smtp.quarantine: rewriting envelope <%s> -> <%s> at %s' % (
+                envelope_from, rewrite_envelope_from, tmpname))
+            os.write(fd, '%s\n%s\n' % (rewrite_envelope_from, envelope_to))
+            os.write(fd, message)
+            os.lseek(fd, 0, os.SEEK_SET)
+            os.dup2(fd, 0)
+            os.close(fd)
+
+        binary = os.path.join(os.path.dirname(sys.argv[0]), 'smtp.nullmailer')
+        os.execv(binary, sys.argv[1:])
+        sys.exit(42)
+
+if __name__ == '__main__':
+    try:
+        main()
+        sys.exit(0)
+    except Exception, e:
+        syslog.syslog(syslog.LOG_ERR, 'smtp.quarantine: Failed: %s %s' % (e.__class__.__name__, e))
+        sys.exit(1)

@@ -1,0 +1,49 @@
+- copy:
+    content="{{ mail_addr }}"
+    dest=/etc/nullmailer/nullquarantine_rewrite_envelope_from
+
+- copy:
+    content="{{ mail_addr }}"
+    dest=/etc/nullmailer/nullquarantine_rewrite_header_from
+
+- copy:
+    src=quarantine
+    dest=/etc/nullmailer/quarantine
+    mode=644
+    owner=root
+    backup=yes
+
+- file:
+    path=/var/spool/nullmailer/quarantine
+    state=directory
+    mode=750
+    owner=mail
+    group=root
+
+- copy:
+    src=smtp.quarantine
+    dest=/usr/lib/nullmailer/smtp.quarantine
+    mode=755
+    owner=root
+
+- stat:
+    path=/usr/lib/nullmailer/smtp
+    follow=false
+  register: smtp_bin
+
+- shell: dpkg-divert --rename --local --divert /usr/lib/nullmailer/smtp.nullmailer --add /usr/lib/nullmailer/smtp
+  args:
+    removes: /usr/lib/nullmailer/smtp
+    creates: /usr/lib/nullmailer/smtp.nullmailer
+    # revert: dpkg-divert --rename --remove /usr/lib/nullmailer/smtp
+  when: smtp_bin.stat.exists and not smtp_bin.stat.islnk
+
+- stat:
+    path=/usr/lib/nullmailer/smtp
+    follow=false
+  register: smtp_bin
+
+- file:
+    src=smtp.quarantine
+    dest=/usr/lib/nullmailer/smtp
+    state=link

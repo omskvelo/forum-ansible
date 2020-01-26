@@ -1,0 +1,1 @@
+smtp.yandex.ru smtp --port=587 --starttls --user={{ mail_addr }} --pass={{ mail_password }}

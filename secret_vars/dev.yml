@@ -1,3 +1,6 @@
 mysql_root_password: password
 omskvelo_sql_password: password
 yandex_pdd_token: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+mail_adminaddr: ''
+mail_addr: 'omskvelo@omskvelo.ru'
+mail_password: ''

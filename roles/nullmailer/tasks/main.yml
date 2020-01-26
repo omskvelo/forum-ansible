@@ -1,0 +1,26 @@
+---
+
+- apt:
+    name=nullmailer
+    state=present
+
+# everything sent to `mailname` goes to `adminaddr` -- man nullmailer-queue
+- template:
+    src=mailname
+    backup=yes
+    dest=/etc/
+
+- template:
+    src=adminaddr
+    backup=yes
+    dest=/etc/nullmailer/
+
+- template:
+    src=remotes
+    backup=yes
+    dest=/etc/nullmailer/
+    mode=440
+    owner=root
+    group=mail
+  notify:
+    - restart nullmailer
