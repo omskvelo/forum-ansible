@@ -1,3 +1,7 @@
+## Ansible-скрипты для поднятия форума.
+
+### Описание структуры файлов
+
 В директории `hosts` находятся файлы с адресами хостов:
 
 - `local_dev.ini` - какой-либо свой локальный сервер для тестов
@@ -17,7 +21,7 @@
 - `bin/play_local_dev` `playbook.yml` — на local_dev
 - `bin/prod_play` `playbook.yml` — на проде
 
-Описания playbook'ов:
+### Описания playbook'ов:
 
 - `py2.yml` — Установить python2 на целевой машине (для ansibl'а)
 - `main.yml` — Установить/настроить основное окружение (nginx/mysql/php/etc)
@@ -30,13 +34,36 @@
 - `cron.yml` `-e key=<key>` - настроить cron для IPB, key берётся из  AdminCP → System → Settings/Advanced Configuration → Server Environment → выбрать "Use cron", скопировать ключ и подставить как параметр `key`), для прода стоит сделать.
 
 
-Пример как задеплоить на local_dev:
+### Пример как задеплоить на local_dev:
 
-- поднимаем хост
-- прописываем его адрес в `hosts/local_dev.ini`
-- `bin/play_local_dev py2.yml`
-- `bin/play_local_dev main.yml`
-- `bin/play_local_dev ipb.yml`
-- берём откуда-нибудь дамп базы (делаем дамп с помощью `db_dump.yml`, или из бэкапов, или ещё откуда-нибудь), будем считать что он в файле `db_dump.sql.gz`
-- `bin/play_local_dev db_import.yml -e file=db_dump.sql.gz`
-- в каком-то виде всё должно заработать
+Отступление: у [ICS](https://invisioncommunity.com/) есть ограничение на количество инсталляций, с доменным именем разрешается только две - основная и тестовая (сейчас это omskvelo.ru и dev.omskvelo.ru соответственно). А также разрешается неограниченное количество инсталляций по адресу 127.0.0.1 - что, конечно, неудобно, т.к. тогда придется устанавливать форум, БД и т.п. непосредственно на используемую ОС. Но ограничение на использование одной тестовой инсталляции можно обойти, прописав dev.omskvelo.ru с нужным адресом локально в `/etc/hosts`, именно такой вариант инсталляции описывается ниже.
+
+1. поднимаем хост  
+1. прописываем его адрес в `hosts/local_dev.ini`
+1. (опционально) прописываем его адрес как dev.omskvelo.ru в `/etc/hosts` локально и на самом хосте (на всякий случай)
+1. делаем/скачиваем дамп базы:  
+   ```
+   bin/prod_play db_dump.yml
+   ````
+   в текущей директории появится файл с названием навроде  `_omskvelo.ru-db_dump-20200129T170134.sql.gz`
+1. делаем частичный дамп директории uploads (там есть файлы, без которых форум нормально не будет функционировать, в частности CSS):
+   ```
+   bin/prod_play uploads_partial_dump.yml
+   ```
+   в текущей директории появится директория с названием навроде 
+   `_omskvelo.ru-uploads_partial-20200129T182835`
+1. ```
+   bin/play_local_dev main.yml
+   ```
+1. ```
+   bin/play_local_dev ipb.yml
+   ```
+1. импортируем базу из файла, скачанного на шаге 3:  
+   ```
+   bin/play_local_dev db_import.yml -e file=db_dump.sql.gz
+   ```
+1. импортируем uploads из директории, скачанной на шаге 4:  
+   ```
+   bin/play_local_dev uploads_partial_import.yml -e folder=<_omskvelo.ru-uploads_partial-...>
+   ```
+

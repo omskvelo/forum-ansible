@@ -2,15 +2,13 @@
   hosts: "{{ host }}"
 
   vars:
-    - dump_file_name: "_{{ inventory_hostname }}-db_dump-{{ ansible_date_time.iso8601_basic_short }}.sql"
+    - dump_file_name: "_{{ inventory_hostname }}-db_dump-{{ ansible_date_time.iso8601_basic_short }}.sql.gz"
 
   tasks:
 
   - pause:
       prompt: "WARNING: RUNNING ON PROD"
     when: host == "prod"
-
-  # - name: set fact
 
   - name: Dump database
     mysql_db:
@@ -19,11 +17,7 @@
       target: "/tmp/{{ dump_file_name }}"
       login_user: "{{ omskvelo_sql_user }}"
       login_password: "{{ omskvelo_sql_password }}"
-  
-  - name: Compress dump
-    archive:
-      path: "/tmp/{{ dump_file_name }}"
-      dest: "/tmp/{{ dump_file_name }}.gz"
+      single_transaction: yes
 
   - name: Remove tmp file
     file:
@@ -32,11 +26,11 @@
 
   - name: Download file
     fetch:
-      src: "/tmp/{{ dump_file_name }}.gz"
-      dest: "{{ dump_file_name }}.gz"
+      src: "/tmp/{{ dump_file_name }}"
+      dest: "{{ dump_file_name }}"
       flat: yes
 
   - name: Remove tmp file
     file:
       state: absent
-      path: "/tmp/{{ dump_file_name }}.gz"
+      path: "/tmp/{{ dump_file_name }}"

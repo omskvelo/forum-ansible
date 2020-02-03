@@ -1,6 +1,7 @@
 - name: Install Nginx
-  include_role:
-    name: nickjj.nginx
+  package:
+    name: nginx
+    state: present
 
 - name: Open http port
   ufw:

@@ -67,9 +67,32 @@
       mode: 0770
     with_items:
       - "{{ forum_location }}/datastore"
-      # - "{{ forum_location }}/uploads"
-      # - "{{ forum_location }}/uploads/logs"
+      - "{{ forum_location }}/uploads"
+      - "{{ forum_location }}/uploads/logs"
       - "{{ ipb_location }}/plugins"
+    become: yes
+
+  - name: create more dirs
+    file:
+      path: '{{ forum_location }}/uploads/{{ item }}'
+      state: directory
+      owner: "{{ omskvelo_unix_user }}"
+      group: "{{ omskvelo_unix_group }}"
+      mode: 0770
+    with_items:
+      - react 
+      - profile_fields 
+      - club_images 
+      - club_fields 
+      - ads 
+      - social_images 
+      - image_proxy 
+      - emoji 
+      - profile 
+      - files 
+      - login_icons 
+      - icons 
+      - calendar_covers
     become: yes
 
   - name: Link IPB configuration

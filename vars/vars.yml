@@ -1,5 +1,5 @@
 omskvelo_unix_user: omskvelo
-omskvelo_unix_group: omskvelo
+omskvelo_unix_group: www-data
 
 omskvelo_sql_user: omskvelo
 omskvelo_sql_db: omskvelo

@@ -10,3 +10,10 @@
     dest: "/etc/nginx/sites-enabled/omskvelo.ru.conf"
     state: link
   notify: reload nginx
+
+- name: Make nginx configuration default
+  file:
+    src: "/etc/nginx/sites-enabled/omskvelo.ru.conf"
+    dest: "/etc/nginx/sites-enabled/default"
+    state: link
+  notify: reload nginx

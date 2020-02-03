@@ -12,5 +12,5 @@
   - { role: omskvelo-fpm,         tags: omskvelo-fpm }
   - { role: omskvelo-nginx,       tags: omskvelo-nginx }
   - { role: omskvelo-ipb-config,  tags: omskvelo-ipb-config }
-  - { role: nullmailer,           tags: nullmailer,   when: inventory_file == "prod" }
-  - { role: nullquarantine,       tags: nullmailer,   when: inventory_file == "prod" }
+  - { role: nullmailer,           tags: nullmailer,   when: host == "prod" }
+  - { role: nullquarantine,       tags: nullmailer,   when: host == "prod" }

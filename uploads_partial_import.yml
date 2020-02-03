@@ -22,6 +22,14 @@
     with_items: "{{ subfolders }}"
     become: yes
 
+  - name: Temporary update permissions to less restrictive
+    file:
+      path: "{{ ipb_uploads_location }}"
+      owner: "{{ omskvelo_unix_user }}"
+      group: "{{ omskvelo_unix_group }}"
+      mode: 0777
+    become: yes    
+
   - name: Upload 'uploads' folder pieces
     synchronize:
       src: "{{ folder }}/{{ item }}"
@@ -33,6 +41,7 @@
       path: "{{ ipb_uploads_location }}/{{ item }}"
       owner: "{{ omskvelo_unix_user }}"
       group: "{{ omskvelo_unix_group }}"
+      recurse: yes
       mode: 0770
     with_items: "{{ subfolders }}"
     become: yes

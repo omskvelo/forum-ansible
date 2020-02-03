@@ -12,6 +12,11 @@
       src: "{{ file }}"
       dest: /tmp
 
+  - name: check if DB exists
+    shell: mysql --user={{ omskvelo_sql_user }} --password={{ omskvelo_sql_password }} -e 'SHOW DATABASES;' | grep -c {{ omskvelo_sql_db }}
+    register: dbstatus
+    failed_when: dbstatus.rc == 2
+
   - name: Backup database
     mysql_db:
       state: dump
@@ -19,6 +24,7 @@
       target: "/tmp/{{ inventory_hostname }}-{{ ansible_date_time.iso8601_basic }}.sql"
       login_user: "{{ omskvelo_sql_user }}"
       login_password: "{{ omskvelo_sql_password }}"
+    when: dbstatus.stdout != "0"  
 
   - name: Delete database
     mysql_db:

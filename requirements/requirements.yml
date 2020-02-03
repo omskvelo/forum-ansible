@@ -1,5 +1,5 @@
 - src: geerlingguy.php-versions
 - src: geerlingguy.php
-- src: nickjj.nginx
+- src: nginxinc.nginx
 - src: geerlingguy.mysql
 - src: geerlingguy.memcached

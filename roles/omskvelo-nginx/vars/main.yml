@@ -1,1 +1,0 @@
-nginx_user: '{{ omskvelo_unix_user }}'
