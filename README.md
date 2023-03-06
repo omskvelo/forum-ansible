@@ -52,9 +52,11 @@
    ```
    в текущей директории появится директория с названием навроде 
    `_omskvelo.ru-uploads_partial-20200129T182835`
+
 1. ```
    bin/play_local_dev main.yml
    ```
+
 1. ```
    bin/play_local_dev ipb.yml
    ```
