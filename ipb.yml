@@ -17,7 +17,7 @@
       repo: "git@bitbucket.org:ivanzoid/omskvelo-forum.git"
       dest: "omskvelo-forum"
       depth: 1
-      version: {{ ipb_version }}
+      version: "{{ ipb_version }}"
 
   - name: remove .git locally
     local_action:

@@ -1,5 +1,5 @@
-- name: Install MySQL
+- name: Install MariaDB
   become: true
   package:
-    name: mysql-server
+    name: mariadb-server
     state: present

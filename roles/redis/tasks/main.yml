@@ -1,0 +1,11 @@
+- name: Install redis
+  become: true
+  package:
+    name: redis-server
+    state: present
+
+- name: Install php-redis
+  become: true
+  package:
+    name: "php{{ php_version }}-redis" 
+    state: present
