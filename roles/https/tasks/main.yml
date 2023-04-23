@@ -1,12 +1,12 @@
 - name: Create acme unix user
   user:
     name: "{{ acme_user }}"
-    createhome: yes
+    createhome: true
     shell: /usr/sbin/nologin
     state: present
     groups: "{{ omskvelo_unix_group }}"
 
-  become: yes
+  become: true
 
 - name: Stat acme dir
   stat:
@@ -18,7 +18,7 @@
     repo: https://github.com/Neilpang/acme.sh
     dest: "{{ acme_dir }}"
     depth: 1
-  become: yes
+  become: true
   become_user: "{{ acme_user }}"
   when: not acme_dir_stat.stat.exists
 
@@ -32,14 +32,14 @@
   args:
     chdir: "{{ acme_dir }}"
     creates: "{{ acme_dot_folder }}"
-  become: yes
+  become: true
   become_user: "{{ acme_user }}"
   when: not acme_dot_folder_stat.stat.exists
 
 - name: Stat certificates dir
   stat:
     path: "{{ acme_dot_folder }}/omskvelo.ru"
-  become: yes
+  become: true
   become_user: "{{ acme_user }}"
   register: certificates_dir_stat
 
@@ -47,14 +47,14 @@
   shell: PDD_Token={{ yandex_pdd_token }} ./acme.sh --issue --dns dns_yandex -d omskvelo.ru -d '*.omskvelo.ru'
   args:
     chdir: "{{ acme_dot_folder }}"
-  become: yes
+  become: true
   become_user: "{{ acme_user }}"
   when: not certificates_dir_stat.stat.exists
 
 - name: Stat nginx certificates
   stat:
     path: "{{ nginx_key_file }}"
-  become: yes
+  become: true
   become_user: "{{ acme_user }}"
   register: nginx_certificate_file_stat
 
@@ -63,7 +63,7 @@
     path: "{{ nginx_ssl_dir }}"
     state: directory
     owner: "{{ acme_user }}"
-  become: yes
+  become: true
   when: not nginx_certificate_file_stat.stat.exists
 
 - name: Create sudoers files
@@ -74,7 +74,7 @@
     owner: root
     group: root
     validate: "/usr/sbin/visudo -cf %s"
-  become: yes
+  become: true
 
 - name: Install certificates
   shell: |
@@ -85,6 +85,6 @@
     --reloadcmd      "sudo service nginx force-reload"
   args:
     chdir: "{{ acme_dot_folder }}"
-  become: yes
+  become: true
   become_user: "{{ acme_user }}"
   when: not nginx_certificate_file_stat.stat.exists

@@ -1,15 +1,26 @@
+- name: Install pymysql
+  become: true
+  package:
+    name: python3-pymysql
+    state: present
+
 - name: Create database
+  become: true
   mysql_db:
     name: "{{ omskvelo_sql_db }}"
     encoding: utf8mb4
+    login_unix_socket: /var/run/mysqld/mysqld.sock
     state: present
 
 - name: Create MySQL user
+  become: true
   mysql_user:
     name: "{{ omskvelo_sql_user }}"
     password: "{{ omskvelo_sql_password }}"
     priv: "{{ omskvelo_sql_db }}.*:ALL"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
     state: present
 
 - name: Fix sql_mode
+  become: true
   command: mysql --execute "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));"

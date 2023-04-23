@@ -1,7 +1,15 @@
-- name: Install PHP-versions
-  include_role:
-    name: geerlingguy.php-versions
-
 - name: Install PHP
-  include_role:
-    name: geerlingguy.php
+  become: true
+  package:
+    name: 
+     - "php{{ php_version }}"
+     - "php{{ php_version }}-gd"
+     - "php{{ php_version }}-mysql"
+     - "php{{ php_version }}-curl"
+     - "php{{ php_version }}-mbstring"
+     - "php{{ php_version }}-xml"
+     - "php{{ php_version }}-zip"
+     - "php{{ php_version }}-memcached"
+     - "php{{ php_version }}-imagick" 
+     - "php{{ php_version }}-fpm" 
+    state: present

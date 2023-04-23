@@ -29,7 +29,7 @@
 - `db_dump.yml` — Сделать дамп базы
 - `db_import.yml` `-e file=db_dump.tgz` — Залить дамп базы из файла `db_dump.tgz` на целевую машину (не стоит запускать на проде ес-но)
 - `uploads_partial_dump.yml` — Частично скачать содержимое uploads (чтобы форум поставленный из дампа базы на свежую машину выглядел более-менее адекватно)
-- `uploads_partial_import.ym.` `-e folder=uploads_folder` — Залить частично скачанную с помощью `uploads_partial_dump.yml` директорию uploads, из локальной директории `uploads_folder`
+- `uploads_partial_import.yml -e folder=uploads_folder` — Залить частично скачанную с помощью `uploads_partial_dump.yml` директорию uploads, из локальной директории `uploads_folder`
 - `https.iml` — Выпустить https-сертификат через let's encrypt (в `secret_vars` должна быть определена переменная `yandex_pdd_token`)
 - `cron.yml` `-e key=<key>` - настроить cron для IPB, key берётся из  AdminCP → System → Settings/Advanced Configuration → Server Environment → выбрать "Use cron", скопировать ключ и подставить как параметр `key`), для прода стоит сделать.
 

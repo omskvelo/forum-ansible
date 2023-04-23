@@ -5,12 +5,19 @@
 
   tasks:
 
+  - name: remove sources locally
+    local_action:
+      module: file
+      path: "omskvelo-forum"
+      state: absent
+
   - name: git clone locally
     local_action:
       module: git
       repo: "git@bitbucket.org:ivanzoid/omskvelo-forum.git"
       dest: "omskvelo-forum"
       depth: 1
+      version: {{ ipb_version }}
 
   - name: remove .git locally
     local_action:
@@ -22,13 +29,13 @@
     archive:
       path: "{{ ipb_location }}"
       dest: "/tmp/{{ dump_file_name }}.tgz"
-    become: yes
+    become: true
 
   - name: remove dir
     file:
       path: "{{ ipb_location }}"
       state: absent
-    become: yes
+    become: true
 
   - name: create dir
     file:
@@ -36,7 +43,7 @@
       state: directory
       owner: "{{ ansible_user }}"
       group: "{{ ansible_user }}"
-    become: yes
+    become: true
 
   - name: copy sources
     synchronize:
@@ -56,7 +63,7 @@
       recurse: yes
       owner: "{{ omskvelo_unix_user }}"
       group: "{{ omskvelo_unix_group }}"
-    become: yes
+    become: true
 
   - name: update other dir permissions
     file:
@@ -70,7 +77,7 @@
       - "{{ forum_location }}/uploads"
       - "{{ forum_location }}/uploads/logs"
       - "{{ ipb_location }}/plugins"
-    become: yes
+    become: true
 
   - name: create more dirs
     file:
@@ -93,11 +100,12 @@
       - login_icons 
       - icons 
       - calendar_covers
-    become: yes
+    become: true
 
   - name: Link IPB configuration
     file:
       src: "../{{ item }}"
       dest: "{{ ipb_location }}/{{ item }}"
       state: link
+      force: yes
     with_items: "{{ ipb_config_files }}"

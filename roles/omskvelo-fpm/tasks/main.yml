@@ -11,7 +11,7 @@
     path: "/etc/php/{{ php_version }}/fpm/pool.d/"
     state: directory
     owner: "root"
-  become: yes
+  become: true
 
 - name: Copy PHP-FPM configuration
   template:

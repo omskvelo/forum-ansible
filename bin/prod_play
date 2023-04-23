@@ -6,7 +6,7 @@ main()
 
     cd ..
 
-    ./requirements/install.sh
+    #./requirements/install.sh
 
     ansible-playbook  -i hosts/prod.ini  -e "@vars/vars.yml"  -e "@secret_vars/prod.yml"  -e "host=prod"  --ask-become-pass   $@
 

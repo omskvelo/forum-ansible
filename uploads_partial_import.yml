@@ -20,7 +20,7 @@
       state: absent
       path: "{{ ipb_uploads_location }}/{{ item }}"
     with_items: "{{ subfolders }}"
-    become: yes
+    become: true
 
   - name: Temporary update permissions to less restrictive
     file:
@@ -28,7 +28,7 @@
       owner: "{{ omskvelo_unix_user }}"
       group: "{{ omskvelo_unix_group }}"
       mode: 0777
-    become: yes    
+    become: true    
 
   - name: Upload 'uploads' folder pieces
     synchronize:
@@ -44,4 +44,4 @@
       recurse: yes
       mode: 0770
     with_items: "{{ subfolders }}"
-    become: yes
+    become: true

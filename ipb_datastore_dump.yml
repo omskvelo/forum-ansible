@@ -10,7 +10,7 @@
     archive:
       path: "{{ ipb_datastore_location }}"
       dest: "/tmp/{{ dump_file_name }}.tgz"
-    become: yes
+    become: true
 
   - name: Download file
     fetch:
@@ -22,5 +22,5 @@
     file:
       state: absent
       path: "/tmp/{{ dump_file_name }}.tgz"
-    become: yes
+    become: true
 

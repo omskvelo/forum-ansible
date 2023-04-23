@@ -15,7 +15,9 @@ ipb_config_files:
   - "conf_global.php"
   - "constants.php"
 
-php_version: '7.2'
+ipb_version: '4.3.1'
+
+php_version: '7.4'
 
 acme_user: acme
 

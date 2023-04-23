@@ -9,4 +9,5 @@ omskvelo-forum
 *.gz
 *.tar
 *.zip
+*.sql
 _*

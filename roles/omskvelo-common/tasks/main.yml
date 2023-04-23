@@ -8,7 +8,12 @@
     name: "{{ omskvelo_unix_user }}"
     group: "{{ omskvelo_unix_group }}"
     shell: /usr/sbin/nologin
-    createhome: no
+    createhome: false
+    state: present
+
+- name: Install locales
+  package:
+    name: locales
     state: present
 
 - name: Ensure a locale exists
@@ -27,4 +32,4 @@
     state: directory
     owner: "{{ omskvelo_unix_user }}"
     group: "{{ omskvelo_unix_group }}"
-  become: yes
+  become: true

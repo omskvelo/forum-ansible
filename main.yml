@@ -1,6 +1,6 @@
 - name: Deploy forum environment
   hosts: "{{ host }}"
-  become: yes
+  become: true
   become_user: root
   roles:
   - { role: omskvelo-common,      tags: omskvelo-common }
@@ -12,5 +12,5 @@
   - { role: omskvelo-fpm,         tags: omskvelo-fpm }
   - { role: omskvelo-nginx,       tags: omskvelo-nginx }
   - { role: omskvelo-ipb-config,  tags: omskvelo-ipb-config }
-  - { role: nullmailer,           tags: nullmailer,   when: host == "prod" }
-  - { role: nullquarantine,       tags: nullmailer,   when: host == "prod" }
+  # - { role: nullmailer,           tags: nullmailer,   when: host == "prod" }
+  # - { role: nullquarantine,       tags: nullmailer,   when: host == "prod" }

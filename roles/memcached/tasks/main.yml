@@ -1,3 +1,5 @@
 - name: Install memcached
-  include_role:
-    name: geerlingguy.memcached
+  become: true
+  package:
+    name: memcached
+    state: present

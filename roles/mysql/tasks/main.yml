@@ -1,3 +1,5 @@
 - name: Install MySQL
-  include_role:
-    name: geerlingguy.mysql
+  become: true
+  package:
+    name: mysql-server
+    state: present
