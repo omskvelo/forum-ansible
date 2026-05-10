@@ -15,13 +15,15 @@ ipb_config_files:
   - "conf_global.php"
   - "constants.php"
 
-ipb_version: '4.3.1'
+ipb_version: '4.7.9'
 
-php_version: '7.2'
+php_version: '8.1'
 
 acme_user: acme
 
-nginx_ssl_dir: "/etc/nginx/ssl/omskvelo"
-nginx_key_file: "{{ nginx_ssl_dir }}/key.pem"
+nginx_ssl_dir: "/etc/letsencrypt/live/omskvelo.ru"
+nginx_key_file: "{{ nginx_ssl_dir }}/privkey.pem"
 nginx_cert_file: "{{ nginx_ssl_dir }}/cert.pem"
 nginx_fullchain_file: "{{ nginx_ssl_dir }}/fullchain.pem"
+
+https_enabled: true

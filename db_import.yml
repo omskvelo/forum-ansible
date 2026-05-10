@@ -40,7 +40,7 @@
       login_user: "{{ omskvelo_sql_user }}"
       login_password: "{{ omskvelo_sql_password }}"
 
-  - name: Import database
+  - name: Import dump
     mysql_db:
       name: "{{ omskvelo_sql_db }}"
       state: import

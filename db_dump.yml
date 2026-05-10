@@ -19,11 +19,6 @@
       login_password: "{{ omskvelo_sql_password }}"
       single_transaction: yes
 
-  - name: Remove tmp file
-    file:
-      state: absent
-      path: "/tmp/{{ dump_file_name }}"      
-
   - name: Download file
     fetch:
       src: "/tmp/{{ dump_file_name }}"
